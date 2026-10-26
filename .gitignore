@@ -1,0 +1,5 @@
+#eliminar node_modules y el .env
+
+/node_modules
+
+.env
