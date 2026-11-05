@@ -6,6 +6,8 @@ const auth    = require('../controllers/auth.controller');
 const content = require('../controllers/content.controller');
 const wl      = require('../controllers/watchlist.controller');
 const notif   = require('../controllers/notifications.controller');
+const reports = require('../controllers/reports.controller');
+const msgs    = require('../controllers/messages.controller');
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 router.post('/auth/register', auth.register);
@@ -45,5 +47,21 @@ router.get('/notifications',          authMiddleware, notif.getNotifications);
 router.get('/notifications/unread',   authMiddleware, notif.unreadCount);
 router.put('/notifications/:id/read', authMiddleware, notif.markRead);
 router.put('/notifications/read-all', authMiddleware, notif.markAllRead);
+
+// ── Soporte: reportes, agentes y roles ────────────────────────────────────────
+router.post  ('/reports',            authMiddleware, upload.single('attachment'), reports.createReport);
+router.get   ('/reports',            authMiddleware, reports.listReports);
+router.get   ('/reports/:id',        authMiddleware, reports.getReport);
+router.put   ('/reports/:id',        authMiddleware, reports.updateReport);
+router.put   ('/reports/:id/assign', adminMiddleware, reports.assignReport);
+router.delete('/reports/:id',        authMiddleware, reports.deleteReport);
+router.get   ('/agents',             adminMiddleware, reports.listAgents);
+router.put   ('/admin/users/role',   adminMiddleware, reports.setUserRole);
+
+// ── Mensajes y recomendaciones ────────────────────────────────────────────────
+router.get   ('/users/lookup', authMiddleware, msgs.lookupUser);
+router.post  ('/messages',     authMiddleware, msgs.sendMessage);
+router.get   ('/messages',     authMiddleware, msgs.listMessages);
+router.delete('/messages',     authMiddleware, msgs.clearMessages);
 
 module.exports = router;

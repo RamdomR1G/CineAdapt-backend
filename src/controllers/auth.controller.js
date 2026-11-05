@@ -7,14 +7,20 @@ async function register(req, res) {
 
   if (!name || !email || !password)
     return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
-  if (password.length < 6)
-    return res.status(400).json({ message: 'La contrasena debe tener minimo 6 caracteres.' });
+  if (typeof name !== 'string' || typeof email !== 'string' || typeof password !== 'string')
+    return res.status(400).json({ message: 'Datos invalidos.' });
+  if (name.length > 100 || email.length > 150)
+    return res.status(400).json({ message: 'Nombre o correo demasiado largo.' });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return res.status(400).json({ message: 'Correo con formato invalido.' });
+  if (password.length < 8)
+    return res.status(400).json({ message: 'La contrasena debe tener minimo 8 caracteres.' });
 
   const exists = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
   if (exists.rows.length)
     return res.status(409).json({ message: 'El correo ya esta registrado.' });
 
-  const hash = await bcrypt.hash(password, 12);
+  const hash = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS) || 12);
   const { rows } = await pool.query(
     'INSERT INTO users (name, email, password_hash) VALUES ($1,$2,$3) RETURNING id, name, email, role',
     [name, email, hash]

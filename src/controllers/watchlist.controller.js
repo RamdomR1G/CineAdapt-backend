@@ -23,6 +23,7 @@ async function addToWatchlist(req, res) {
     );
     res.status(201).json(rows[0]);
   } catch (e) {
+    if (e.code === '23503') return res.status(404).json({ message: 'Contenido no encontrado.' });
     if (e.code === '23505') return res.status(409).json({ message: 'Ya esta en tu lista.' });
     throw e;
   }

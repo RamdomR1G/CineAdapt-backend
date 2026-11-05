@@ -74,6 +74,7 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT NOW()
     );
   `);
+  await pool.query(require('./support-schema'));
   console.log('Tablas listas.');
 }
 
