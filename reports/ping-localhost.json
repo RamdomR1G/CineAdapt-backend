@@ -1,0 +1,13 @@
+{
+  "fecha": "2026-11-10T23:26:54.813Z",
+  "host": "localhost",
+  "metodo": "Saludo TCP al puerto 4100 (alternativa: ICMP no disponible o bloqueado)",
+  "enviados": 20,
+  "recibidos": 20,
+  "nota": "El comando ping no esta disponible en este equipo.",
+  "perdida_pct": 0,
+  "min": 0.07,
+  "prom": 0.53,
+  "max": 6.98,
+  "desv": 1.48
+}

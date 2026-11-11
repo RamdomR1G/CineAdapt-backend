@@ -9,7 +9,9 @@
     "test": "jest --runInBand",
     "test:unit": "jest tests/unit",
     "test:integration": "jest --runInBand tests/integration",
-    "test:coverage": "jest --runInBand --coverage"
+    "test:coverage": "jest --runInBand --coverage",
+    "lint": "eslint src",
+    "test:wb": "jest --runInBand tests/whitebox"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,6 +25,10 @@
     "pg": "^8.12.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.15.0",
     "jest": "^30.5.2",
     "nodemon": "^3.1.4",
     "supertest": "^7.3.1"
@@ -35,7 +41,10 @@
     "collectCoverageFrom": [
       "src/controllers/auth.controller.js",
       "src/controllers/watchlist.controller.js",
-      "src/middleware/auth.js"
+      "src/controllers/reports.controller.js",
+      "src/controllers/messages.controller.js",
+      "src/middleware/auth.js",
+      "src/app.js"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"

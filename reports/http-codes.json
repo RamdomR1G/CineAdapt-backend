@@ -1,0 +1,315 @@
+[
+  {
+    "id": "HTTP-01",
+    "endpoint": "GET /api/content",
+    "descripcion": "consulta exitosa",
+    "esperado": 200,
+    "obtenido": 200,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "0"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-02",
+    "endpoint": "POST /api/auth/register",
+    "descripcion": "registro creado",
+    "esperado": 201,
+    "obtenido": 201,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message",
+      "user"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-03",
+    "endpoint": "POST /api/reports",
+    "descripcion": "registro creado",
+    "esperado": 201,
+    "obtenido": 201,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "id",
+      "code",
+      "title",
+      "description",
+      "priority",
+      "status",
+      "created_by",
+      "assigned_to",
+      "attachment_url",
+      "version",
+      "created_at",
+      "updated_at",
+      "created_by_name",
+      "assigned_to_name"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-04",
+    "endpoint": "DELETE /api/reports/:id",
+    "descripcion": "eliminacion sin cuerpo",
+    "esperado": 204,
+    "obtenido": 200,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "La API devuelve 200 con {message}."
+  },
+  {
+    "id": "HTTP-05",
+    "endpoint": "POST /api/auth/register",
+    "descripcion": "datos mal estructurados",
+    "esperado": 400,
+    "obtenido": 400,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-06",
+    "endpoint": "POST /api/reports",
+    "descripcion": "validacion semantica fallida",
+    "esperado": 422,
+    "obtenido": 400,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "La API usa 400 para toda validacion; 422 no se utiliza."
+  },
+  {
+    "id": "HTTP-07",
+    "endpoint": "POST /api/auth/login",
+    "descripcion": "cuerpo JSON invalido",
+    "esperado": 400,
+    "obtenido": 400,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-08a",
+    "endpoint": "GET /api/reports/:id",
+    "descripcion": "recurso inexistente",
+    "esperado": 404,
+    "obtenido": 404,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-08b",
+    "endpoint": "GET /api/content/:id",
+    "descripcion": "recurso inexistente",
+    "esperado": 404,
+    "obtenido": 404,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-09a",
+    "endpoint": "POST /api/auth/register",
+    "descripcion": "correo duplicado",
+    "esperado": 409,
+    "obtenido": 409,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-09b",
+    "endpoint": "PUT /api/reports/:id",
+    "descripcion": "version desactualizada",
+    "esperado": 409,
+    "obtenido": 409,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-10a",
+    "endpoint": "GET /api/reports",
+    "descripcion": "sin token",
+    "esperado": 401,
+    "obtenido": 401,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-10b",
+    "endpoint": "GET /api/reports",
+    "descripcion": "token alterado",
+    "esperado": 401,
+    "obtenido": 401,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-10c",
+    "endpoint": "POST /api/auth/login",
+    "descripcion": "contrasena incorrecta",
+    "esperado": 401,
+    "obtenido": 401,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-11a",
+    "endpoint": "GET /api/agents",
+    "descripcion": "usuario sin permisos",
+    "esperado": 403,
+    "obtenido": 403,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-11b",
+    "endpoint": "PUT /api/admin/users/role",
+    "descripcion": "usuario sin permisos",
+    "esperado": 403,
+    "obtenido": 403,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-11c",
+    "endpoint": "GET /api/agents",
+    "descripcion": "sin autenticar (debe ser 401, no 403)",
+    "esperado": 401,
+    "obtenido": 401,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-12",
+    "endpoint": "GET /api/reports/:id",
+    "descripcion": "reporte ajeno",
+    "esperado": 403,
+    "obtenido": 403,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": ""
+  },
+  {
+    "id": "HTTP-13a",
+    "endpoint": "GET /api/content/abc",
+    "descripcion": "id invalido",
+    "esperado": 400,
+    "obtenido": 500,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "Consulta con id no numerico: error de PostgreSQL 22P02 sin capturar."
+  },
+  {
+    "id": "HTTP-13b",
+    "endpoint": "DELETE /api/watchlist/abc",
+    "descripcion": "id invalido",
+    "esperado": 400,
+    "obtenido": 500,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "Igual que arriba."
+  },
+  {
+    "id": "HTTP-14",
+    "endpoint": "GET /health (Origin ajeno)",
+    "descripcion": "origen no permitido",
+    "esperado": 403,
+    "obtenido": 500,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "El middleware lanza Error sin status."
+  },
+  {
+    "id": "HTTP-15",
+    "endpoint": "POST /api/auth/login",
+    "descripcion": "configuracion incompleta",
+    "esperado": 200,
+    "obtenido": 500,
+    "conforme": false,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "El servidor arranca sin validar la variable."
+  },
+  {
+    "id": "HTTP-16",
+    "endpoint": "GET /api/content/abc",
+    "descripcion": "el error no debe revelar detalles internos",
+    "esperado": 500,
+    "obtenido": 500,
+    "conforme": true,
+    "json": true,
+    "llaves": [
+      "message"
+    ],
+    "nota": "Cuerpo: {\"message\":\"invalid input syntax for type integer: \\\"abc\\\"\"}"
+  }
+]

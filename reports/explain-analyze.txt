@@ -1,0 +1,194 @@
+Timing is off.
+INSERT 0 2000
+INSERT 0 4500
+INSERT 0 50000
+INSERT 0 20000
+ANALYZE
+ dato  | users | content | reports | watchlist 
+-------+-------+---------+---------+-----------
+ filas |  2001 |    5000 |   50126 |     20000
+(1 row)
+
+               indexname               |   tablename   
+---------------------------------------+---------------
+ content_pkey                          | content
+ episodes_pkey                         | episodes
+ episodes_season_id_episode_number_key | episodes
+ messages_pkey                         | messages
+ notifications_pkey                    | notifications
+ reports_code_key                      | reports
+ reports_pkey                          | reports
+ seasons_content_id_season_number_key  | seasons
+ seasons_pkey                          | seasons
+ users_email_key                       | users
+ users_pkey                            | users
+ watchlist_pkey                        | watchlist
+ watchlist_user_id_content_id_key      | watchlist
+(13 rows)
+
+=== Q1 listContent: catalogo publicado (GET /api/content) ===
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Sort  (cost=567.69..580.19 rows=5000 width=424) (actual time=1.097..1.315 rows=5000 loops=1)
+   Sort Key: created_at DESC
+   Sort Method: quicksort  Memory: 1699kB
+   Buffers: shared hit=198
+   ->  Seq Scan on content  (cost=0.00..260.50 rows=5000 width=424) (actual time=0.003..0.649 rows=5000 loops=1)
+         Filter: ((status)::text = 'published'::text)
+         Buffers: shared hit=198
+ Planning:
+   Buffers: shared hit=44
+ Planning Time: 0.062 ms
+ Execution Time: 1.474 ms
+(11 rows)
+
+=== Q2 listReports de un usuario (GET /api/reports) ===
+                                                            QUERY PLAN                                                            
+----------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=1323.04..1323.10 rows=25 width=130) (actual time=2.865..2.868 rows=25 loops=1)
+   Sort Key: r.created_at DESC
+   Sort Method: quicksort  Memory: 27kB
+   Buffers: shared hit=660
+   ->  Nested Loop  (cost=1264.16..1322.46 rows=25 width=130) (actual time=2.850..2.857 rows=25 loops=1)
+         Buffers: shared hit=660
+         ->  Index Scan using users_pkey on users u  (cost=0.28..8.29 rows=1 width=16) (actual time=0.006..0.007 rows=1 loops=1)
+               Index Cond: (id = 1000)
+               Buffers: shared hit=3
+         ->  Hash Right Join  (cost=1263.89..1313.91 rows=25 width=118) (actual time=2.843..2.846 rows=25 loops=1)
+               Hash Cond: (a.id = r.assigned_to)
+               Buffers: shared hit=657
+               ->  Seq Scan on users a  (cost=0.00..40.01 rows=2001 width=16) (actual time=0.004..0.112 rows=2001 loops=1)
+                     Buffers: shared hit=20
+               ->  Hash  (cost=1263.58..1263.58 rows=25 width=106) (actual time=2.603..2.604 rows=25 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                     Buffers: shared hit=637
+                     ->  Seq Scan on reports r  (cost=0.00..1263.58 rows=25 width=106) (actual time=0.068..2.598 rows=25 loops=1)
+                           Filter: (created_by = 1000)
+                           Rows Removed by Filter: 50101
+                           Buffers: shared hit=637
+ Planning:
+   Buffers: shared hit=43
+ Planning Time: 0.140 ms
+ Execution Time: 2.887 ms
+(25 rows)
+
+=== Q3 login: busqueda por correo (POST /api/auth/login) ===
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Index Scan using users_email_key on users  (cost=0.28..8.29 rows=1 width=48) (actual time=0.004..0.005 rows=1 loops=1)
+   Index Cond: ((email)::text = 'carga1500@wb.test'::text)
+   Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=9
+ Planning Time: 0.038 ms
+ Execution Time: 0.009 ms
+(7 rows)
+
+=== Q4 getWatchlist de un usuario (GET /api/watchlist) ===
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.57..99.22 rows=10 width=424) (actual time=0.011..0.020 rows=10 loops=1)
+   Buffers: shared hit=33
+   ->  Index Only Scan using watchlist_user_id_content_id_key on watchlist w  (cost=0.29..24.21 rows=10 width=4) (actual time=0.006..0.008 rows=10 loops=1)
+         Index Cond: (user_id = 1000)
+         Heap Fetches: 10
+         Buffers: shared hit=3
+   ->  Index Scan using content_pkey on content c  (cost=0.28..7.50 rows=1 width=424) (actual time=0.001..0.001 rows=1 loops=10)
+         Index Cond: (id = w.content_id)
+         Buffers: shared hit=30
+ Planning:
+   Buffers: shared hit=18
+ Planning Time: 0.099 ms
+ Execution Time: 0.028 ms
+(13 rows)
+
+=== Q5 reportes asignados a un agente filtrados por estado ===
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on reports  (cost=0.00..1388.89 rows=1 width=106) (actual time=2.502..2.503 rows=0 loops=1)
+   Filter: ((assigned_to = 5) AND ((status)::text = 'Abierto'::text))
+   Rows Removed by Filter: 50126
+   Buffers: shared hit=637
+ Planning Time: 0.023 ms
+ Execution Time: 2.507 ms
+(6 rows)
+
+##### PROPUESTA DE CORRECCION: indices #####
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+=== Q1 despues de indices ===
+                                                                  QUERY PLAN                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_content_status_created on content  (cost=0.28..575.35 rows=5000 width=424) (actual time=0.016..0.598 rows=5000 loops=1)
+   Index Cond: ((status)::text = 'published'::text)
+   Buffers: shared hit=201 read=6
+ Planning:
+   Buffers: shared hit=52 read=1
+ Planning Time: 0.123 ms
+ Execution Time: 0.758 ms
+(7 rows)
+
+=== Q2 despues de indices ===
+                                                                       QUERY PLAN                                                                        
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=149.40..149.46 rows=25 width=130) (actual time=0.335..0.337 rows=25 loops=1)
+   Sort Key: r.created_at DESC
+   Sort Method: quicksort  Memory: 27kB
+   Buffers: shared hit=48 read=2
+   ->  Nested Loop  (cost=90.53..148.82 rows=25 width=130) (actual time=0.319..0.325 rows=25 loops=1)
+         Buffers: shared hit=48 read=2
+         ->  Index Scan using users_pkey on users u  (cost=0.28..8.29 rows=1 width=16) (actual time=0.005..0.005 rows=1 loops=1)
+               Index Cond: (id = 1000)
+               Buffers: shared hit=3
+         ->  Hash Right Join  (cost=90.25..140.28 rows=25 width=118) (actual time=0.313..0.316 rows=25 loops=1)
+               Hash Cond: (a.id = r.assigned_to)
+               Buffers: shared hit=45 read=2
+               ->  Seq Scan on users a  (cost=0.00..40.01 rows=2001 width=16) (actual time=0.003..0.121 rows=2001 loops=1)
+                     Buffers: shared hit=20
+               ->  Hash  (cost=89.94..89.94 rows=25 width=106) (actual time=0.065..0.066 rows=25 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                     Buffers: shared hit=25 read=2
+                     ->  Bitmap Heap Scan on reports r  (cost=4.48..89.94 rows=25 width=106) (actual time=0.034..0.060 rows=25 loops=1)
+                           Recheck Cond: (created_by = 1000)
+                           Heap Blocks: exact=25
+                           Buffers: shared hit=25 read=2
+                           ->  Bitmap Index Scan on idx_reports_created_by  (cost=0.00..4.48 rows=25 width=0) (actual time=0.028..0.028 rows=25 loops=1)
+                                 Index Cond: (created_by = 1000)
+                                 Buffers: shared read=2
+ Planning:
+   Buffers: shared hit=66 read=2
+ Planning Time: 0.178 ms
+ Execution Time: 0.357 ms
+(28 rows)
+
+=== Q4 despues de indices ===
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.57..83.47 rows=10 width=424) (actual time=0.017..0.028 rows=10 loops=1)
+   Buffers: shared hit=31 read=2
+   ->  Index Scan using idx_watchlist_user on watchlist w  (cost=0.29..8.46 rows=10 width=4) (actual time=0.012..0.014 rows=10 loops=1)
+         Index Cond: (user_id = 1000)
+         Buffers: shared hit=1 read=2
+   ->  Index Scan using content_pkey on content c  (cost=0.28..7.50 rows=1 width=424) (actual time=0.001..0.001 rows=1 loops=10)
+         Index Cond: (id = w.content_id)
+         Buffers: shared hit=30
+ Planning:
+   Buffers: shared hit=19 read=1
+ Planning Time: 0.109 ms
+ Execution Time: 0.035 ms
+(12 rows)
+
+=== Q5 despues de indices ===
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_reports_assigned_to on reports  (cost=0.29..8.31 rows=1 width=106) (actual time=0.014..0.014 rows=0 loops=1)
+   Index Cond: ((assigned_to = 5) AND ((status)::text = 'Abierto'::text))
+   Buffers: shared read=2
+ Planning Time: 0.025 ms
+ Execution Time: 0.018 ms
+(5 rows)
+
+DROP INDEX

@@ -1,0 +1,219 @@
+{
+  "fecha": "2026-11-10T23:31:44.465Z",
+  "equipo": {
+    "so": "Linux 6.18.44-fc-v338",
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.30GHz",
+    "nucleos": 2,
+    "ram_gb": 7.83,
+    "node": "v22.23.4"
+  },
+  "servidor": "http://localhost:4100",
+  "diez": [
+    {
+      "n": 1,
+      "status": 200,
+      "ms": 3.2370459999999923,
+      "bytes": 1193
+    },
+    {
+      "n": 2,
+      "status": 200,
+      "ms": 2.9770460000000014,
+      "bytes": 1193
+    },
+    {
+      "n": 3,
+      "status": 200,
+      "ms": 2.639803999999998,
+      "bytes": 1193
+    },
+    {
+      "n": 4,
+      "status": 200,
+      "ms": 2.6637790000000052,
+      "bytes": 1193
+    },
+    {
+      "n": 5,
+      "status": 200,
+      "ms": 2.4748080000000243,
+      "bytes": 1193
+    },
+    {
+      "n": 6,
+      "status": 200,
+      "ms": 3.3011730000000057,
+      "bytes": 1193
+    },
+    {
+      "n": 7,
+      "status": 200,
+      "ms": 2.843322999999998,
+      "bytes": 1193
+    },
+    {
+      "n": 8,
+      "status": 200,
+      "ms": 2.3350969999999904,
+      "bytes": 1193
+    },
+    {
+      "n": 9,
+      "status": 200,
+      "ms": 2.4541650000000175,
+      "bytes": 1193
+    },
+    {
+      "n": 10,
+      "status": 200,
+      "ms": 2.35612900000001,
+      "bytes": 1193
+    }
+  ],
+  "latencia_http": {
+    "n": 10,
+    "min": 2.34,
+    "max": 3.3,
+    "prom": 2.73,
+    "desv": 0.33,
+    "p50": 2.64,
+    "p95": 3.3
+  },
+  "descarga": [
+    {
+      "ms": 2.49,
+      "bytes": 1193,
+      "mbps": 3.83
+    },
+    {
+      "ms": 2.29,
+      "bytes": 1193,
+      "mbps": 4.16
+    },
+    {
+      "ms": 2.18,
+      "bytes": 1193,
+      "mbps": 4.37
+    }
+  ],
+  "subida": [
+    {
+      "status": 201,
+      "ms": 5.67,
+      "bytes_enviados": 1963,
+      "mbps": 2.77
+    },
+    {
+      "status": 201,
+      "ms": 4.42,
+      "bytes_enviados": 1963,
+      "mbps": 3.55
+    },
+    {
+      "status": 201,
+      "ms": 4.16,
+      "bytes_enviados": 1963,
+      "mbps": 3.77
+    }
+  ],
+  "carga_lectura": [
+    {
+      "concurrencia": 1,
+      "total": 40,
+      "ok": 40,
+      "fallidas": 0,
+      "seg": 0.09,
+      "rps": 436.14,
+      "mbps": 4.16,
+      "n": 40,
+      "min": 1.9,
+      "max": 3.24,
+      "prom": 2.29,
+      "desv": 0.31,
+      "p50": 2.24,
+      "p95": 2.95
+    },
+    {
+      "concurrencia": 5,
+      "total": 40,
+      "ok": 40,
+      "fallidas": 0,
+      "seg": 0.07,
+      "rps": 550.15,
+      "mbps": 5.25,
+      "n": 40,
+      "min": 3.16,
+      "max": 24.69,
+      "prom": 8.82,
+      "desv": 4.13,
+      "p50": 7.8,
+      "p95": 17.89
+    },
+    {
+      "concurrencia": 10,
+      "total": 40,
+      "ok": 40,
+      "fallidas": 0,
+      "seg": 0.07,
+      "rps": 572.25,
+      "mbps": 5.46,
+      "n": 40,
+      "min": 5.49,
+      "max": 35.73,
+      "prom": 16.39,
+      "desv": 7.38,
+      "p50": 15.66,
+      "p95": 31.01
+    }
+  ],
+  "carga_escritura": [
+    {
+      "concurrencia": 1,
+      "total": 20,
+      "ok": 20,
+      "fallidas": 0,
+      "seg": 0.07,
+      "rps": 278.1,
+      "mbps": 0.74,
+      "n": 20,
+      "min": 2.93,
+      "max": 6.57,
+      "prom": 3.58,
+      "desv": 0.84,
+      "p50": 3.29,
+      "p95": 4.86
+    },
+    {
+      "concurrencia": 5,
+      "total": 20,
+      "ok": 20,
+      "fallidas": 0,
+      "seg": 0.04,
+      "rps": 565.92,
+      "mbps": 1.51,
+      "n": 20,
+      "min": 4.64,
+      "max": 12.5,
+      "prom": 8.45,
+      "desv": 2.31,
+      "p50": 8.4,
+      "p95": 12.43
+    },
+    {
+      "concurrencia": 10,
+      "total": 20,
+      "ok": 20,
+      "fallidas": 0,
+      "seg": 0.04,
+      "rps": 469.06,
+      "mbps": 1.25,
+      "n": 20,
+      "min": 9.78,
+      "max": 36.16,
+      "prom": 19.37,
+      "desv": 7.86,
+      "p50": 17.47,
+      "p95": 31.8
+    }
+  ]
+}

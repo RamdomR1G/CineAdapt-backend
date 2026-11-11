@@ -1,0 +1,72 @@
+[
+  {
+    "id": "DB-01",
+    "descripcion": "INSERT valido en users",
+    "resultado": "OK, role=user por defecto"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion NOT NULL",
+    "resultado": "Rechazada con SQLSTATE 23502"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion UNIQUE",
+    "resultado": "Rechazada con SQLSTATE 23505"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion FOREIGN KEY",
+    "resultado": "Rechazada con SQLSTATE 23503"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion CHECK prioridad",
+    "resultado": "Rechazada con SQLSTATE 23514"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion CHECK estado",
+    "resultado": "Rechazada con SQLSTATE 23514"
+  },
+  {
+    "id": "DB-02",
+    "descripcion": "Restriccion longitud VARCHAR(150)",
+    "resultado": "Rechazada con SQLSTATE 22001"
+  },
+  {
+    "id": "DB-03",
+    "descripcion": "SELECT por id existente / inexistente",
+    "resultado": "1 fila / 0 filas"
+  },
+  {
+    "id": "DB-04",
+    "descripcion": "UPDATE y SELECT posterior",
+    "resultado": "titulo=Editado, version 1 -> 2"
+  },
+  {
+    "id": "DB-05",
+    "descripcion": "DELETE de usuario con ON DELETE CASCADE",
+    "resultado": "reportes y lista eliminados; contenido intacto"
+  },
+  {
+    "id": "DB-06a",
+    "descripcion": "2 UPDATE simultaneos con control optimista (version)",
+    "resultado": "Codigos 200 y 409"
+  },
+  {
+    "id": "DB-06b",
+    "descripcion": "2 INSERT simultaneos en watchlist",
+    "resultado": "Codigos 201 y 409"
+  },
+  {
+    "id": "DB-06c",
+    "descripcion": "10 registros simultaneos del mismo correo",
+    "resultado": "Codigos: {\"201\":1,\"409\":9}; filas guardadas: 1"
+  },
+  {
+    "id": "DB-07",
+    "descripcion": "Fallo simulado entre INSERT y UPDATE del codigo",
+    "resultado": "HTTP 500; fila huerfana con code=null"
+  }
+]
