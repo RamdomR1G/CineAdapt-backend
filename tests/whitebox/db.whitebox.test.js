@@ -92,27 +92,34 @@ describe('DB-06 concurrencia', () => {
     expect(r.map((x) => x.status).sort()).toEqual([201, 409]);
     anotar('DB-06b', '2 INSERT simultaneos en watchlist', 'Codigos 201 y 409');
   });
-  test('DEF-BE-06: 10 registros simultaneos con el mismo correo -> el patron SELECT-luego-INSERT deja pasar errores 500', async () => {
+  test('DEF-BE-06 corregido: 10 registros simultaneos con el mismo correo -> un 201 y el resto 409, nunca 500', async () => {
     const r = await Promise.all(Array.from({ length: 10 }, () => request(app).post('/api/auth/register').send({ name: 'Dup', email: 'dup@db.test', password: 'clave1234' })));
     const codigos = r.map((x) => x.status).sort();
     const filas = (await pool.query("SELECT 1 FROM users WHERE email='dup@db.test'")).rowCount;
     anotar('DB-06c', '10 registros simultaneos del mismo correo', 'Codigos: ' + JSON.stringify(codigos.reduce((m, c) => ({ ...m, [c]: (m[c] || 0) + 1 }), {})) + '; filas guardadas: ' + filas);
     expect(filas).toBe(1);                                  // la restriccion UNIQUE protege la integridad
     expect(codigos.filter((c) => c === 201)).toHaveLength(1);
-    expect(codigos.some((c) => c === 500)).toBe(true);      // pero la API responde 500 en vez de 409 (condicion de carrera)
+    expect(codigos.filter((c) => c === 409)).toHaveLength(9);   // antes de la correccion algunos eran 500
   });
 });
 
 describe('DB-07 transacciones y operaciones parciales', () => {
-  test('DEF-BE-07: crear un reporte son 2 sentencias sin transaccion; si falla la segunda queda un reporte sin codigo', async () => {
+  test('BE-02 corregido (Practica 12): identificador y codigo se asignan en una sola sentencia; si falla no queda ningun reporte', async () => {
     const original = pool.query.bind(pool);
-    const espia = jest.spyOn(pool, 'query').mockImplementation((sql, ...resto) =>
-      (typeof sql === 'string' && sql.startsWith('UPDATE reports SET code')) ? Promise.reject(new Error('fallo simulado')) : original(sql, ...resto));
+    const espia = jest.spyOn(pool, 'query').mockImplementation((sql, ...r) =>
+      (typeof sql === 'string' && /INSERT INTO reports/.test(sql)) ? Promise.reject(new Error('fallo simulado')) : original(sql, ...r));
     const r = await request(app).post('/api/reports').set(u1.H).send({ title: 'Parcial', description: 'd' });
     espia.mockRestore();
     const { rows } = await pool.query("SELECT id, code FROM reports WHERE title='Parcial'");
-    anotar('DB-07', 'Fallo simulado entre INSERT y UPDATE del codigo', 'HTTP ' + r.status + '; fila huerfana con code=' + rows[0]?.code);
-    expect(r.status).toBe(500); expect(rows).toHaveLength(1); expect(rows[0].code).toBeNull();
+    anotar('DB-07', 'Fallo simulado al crear un reporte (sentencia unica)', 'HTTP ' + r.status + '; filas guardadas=' + rows.length + ' (sin registros parciales)');
+    expect(r.status).toBe(500); expect(rows).toHaveLength(0);
+  });
+  test('BE-02: todo reporte creado por la API tiene su codigo REPxxx (con relleno hasta 3 digitos y sin truncar a partir de 1000)', async () => {
+    const a = await request(app).post('/api/reports').set(u1.H).send({ title: 'A', description: 'd' });
+    await pool.query("SELECT setval(pg_get_serial_sequence('reports','id'), 1233)");
+    const b = await request(app).post('/api/reports').set(u1.H).send({ title: 'B', description: 'd' });
+    expect(a.body.code).toBe('REP00' + a.body.id); expect(b.body.id).toBe(1234); expect(b.body.code).toBe('REP1234');
+    expect((await pool.query('SELECT count(*)::int n FROM reports WHERE code IS NULL')).rows[0].n).toBe(0);
   });
   test('un reporte sin codigo no rompe la unicidad de code (NULL permitido) y el siguiente alta funciona', async () => {
     await pool.query("INSERT INTO reports (title,description,created_by) VALUES ('s1','d',$1),('s2','d',$1)", [u1.id]);

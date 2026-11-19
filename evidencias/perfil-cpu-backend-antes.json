@@ -1,0 +1,80 @@
+{
+  "duracion_ms": 29681.4,
+  "activo_ms": 26168,
+  "por_categoria": {
+    "bcrypt": {
+      "ms": 17328.8,
+      "pct_del_tiempo_activo": 66.2
+    },
+    "nucleo de Node / nativo": {
+      "ms": 4045.2,
+      "pct_del_tiempo_activo": 15.5
+    },
+    "inactivo (idle)": {
+      "ms": 3513.4,
+      "pct_del_tiempo_activo": null
+    },
+    "JSON.stringify": {
+      "ms": 1773.1,
+      "pct_del_tiempo_activo": 6.8
+    },
+    "codigo de la aplicacion y otros": {
+      "ms": 1643.2,
+      "pct_del_tiempo_activo": 6.3
+    },
+    "recoleccion de basura": {
+      "ms": 672.8,
+      "pct_del_tiempo_activo": 2.6
+    },
+    "pg (base de datos)": {
+      "ms": 390.9,
+      "pct_del_tiempo_activo": 1.5
+    },
+    "express / middleware": {
+      "ms": 314,
+      "pct_del_tiempo_activo": 1.2
+    }
+  },
+  "top_funciones": [
+    {
+      "funcion": "_encipher dist/bcrypt.js:958",
+      "ms": 16510.1
+    },
+    {
+      "funcion": "stringify lib/response.js:1154",
+      "ms": 1768.7
+    },
+    {
+      "funcion": "writev :-1",
+      "ms": 1332
+    },
+    {
+      "funcion": "next dist/bcrypt.js:1209",
+      "ms": 681.8
+    },
+    {
+      "funcion": "(garbage collector) :-1",
+      "ms": 672.8
+    },
+    {
+      "funcion": "parseDate postgres-date/index.js:7",
+      "ms": 492.7
+    },
+    {
+      "funcion": "createPublicKey crypto/keys:698",
+      "ms": 328
+    },
+    {
+      "funcion": "update crypto/hash:131",
+      "ms": 304.2
+    },
+    {
+      "funcion": "utf8Slice :-1",
+      "ms": 229.7
+    },
+    {
+      "funcion": "parseDataRowMessage dist/parser.js:226",
+      "ms": 194.3
+    }
+  ]
+}

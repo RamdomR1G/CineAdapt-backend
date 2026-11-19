@@ -75,6 +75,15 @@ async function initDb() {
     );
   `);
   await pool.query(require('./support-schema'));
+  // Practica 12: indices para las consultas con recorrido completo detectadas en la Practica 11 (BE-11)
+  // y soporte de idempotencia para crear reportes (RES-07).
+  await pool.query(`
+    ALTER TABLE reports ADD COLUMN IF NOT EXISTS idempotency_key VARCHAR(64);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_reports_idem        ON reports (created_by, idempotency_key) WHERE idempotency_key IS NOT NULL;
+    CREATE INDEX        IF NOT EXISTS idx_reports_created_by  ON reports (created_by, created_at DESC);
+    CREATE INDEX        IF NOT EXISTS idx_reports_assigned_to ON reports (assigned_to, status);
+    CREATE INDEX        IF NOT EXISTS idx_content_status_created ON content (status, created_at DESC, id DESC);
+  `);
   console.log('Tablas listas.');
 }
 

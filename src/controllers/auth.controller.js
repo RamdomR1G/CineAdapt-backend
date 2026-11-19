@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('../services/password');
 const jwt    = require('jsonwebtoken');
 const { pool } = require('../db/database');
 
@@ -21,10 +21,17 @@ async function register(req, res) {
     return res.status(409).json({ message: 'El correo ya esta registrado.' });
 
   const hash = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS) || 12);
-  const { rows } = await pool.query(
-    'INSERT INTO users (name, email, password_hash) VALUES ($1,$2,$3) RETURNING id, name, email, role',
-    [name, email, hash]
-  );
+  let rows;
+  try {
+    ({ rows } = await pool.query(
+      'INSERT INTO users (name, email, password_hash) VALUES ($1,$2,$3) RETURNING id, name, email, role',
+      [name, email, hash]
+    ));
+  } catch (e) {
+    // Registros simultaneos con el mismo correo: la restriccion UNIQUE rechaza el segundo (DEF-BE-06)
+    if (e.code === '23505') return res.status(409).json({ message: 'El correo ya esta registrado.' });
+    throw e;
+  }
 
   res.status(201).json({ message: 'Cuenta creada.', user: rows[0] });
 }

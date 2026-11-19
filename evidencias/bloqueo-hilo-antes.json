@@ -1,0 +1,18 @@
+{
+  "health_en_reposo_ms": {
+    "prom": 2.4,
+    "max": 5.4
+  },
+  "un_login_ms": 356,
+  "health_con_5_logins_simultaneos_ms": {
+    "prom": 222,
+    "max": 403.7
+  },
+  "logins_simultaneos_ms": [
+    566.1,
+    1337.7,
+    1779.8,
+    1779.8,
+    1779.8
+  ]
+}

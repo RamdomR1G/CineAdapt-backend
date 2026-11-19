@@ -29,19 +29,39 @@ async function createReport(req, res) {
   if (!PRIORITIES.includes(priority))
     return res.status(400).json({ message: 'Prioridad invalida.' });
 
+  // Practica 12: idempotencia. El cliente envia la cabecera Idempotency-Key; si ya existe un reporte con esa clave
+  // para el mismo usuario, se devuelve ese reporte (200) en lugar de crear otro.
+  const key = req.get('Idempotency-Key') || null;
+  if (key !== null && !/^[A-Za-z0-9_-]{8,64}$/.test(key))
+    return res.status(400).json({ message: 'Idempotency-Key invalida (8 a 64 caracteres: letras, numeros, guion).' });
+  const repetido = async () => {
+    const { rows } = await pool.query(SELECT + ' WHERE r.created_by = $1 AND r.idempotency_key = $2', [req.user.id, key]);
+    return rows[0];
+  };
+  if (key) { const previo = await repetido(); if (previo) { res.set('Idempotent-Replay', 'true'); return res.status(200).json(previo); } }
+
   let attachment_url = null;
   if (req.file) {
     const r = await uploadBuffer(req.file.buffer, 'cineadapt/reports', 'image');
     attachment_url = r.secure_url;
   }
 
-  const ins = await pool.query(
-    `INSERT INTO reports (title, description, priority, created_by, attachment_url)
-     VALUES ($1,$2,$3,$4,$5) RETURNING id`,
-    [title.trim(), description.trim(), priority, req.user.id, attachment_url]);
-  const id = ins.rows[0].id;
-  // El identificador lo asigna el servidor (REP001, REP002...), por lo que nunca se repite
-  await pool.query('UPDATE reports SET code = $1 WHERE id = $2', ['REP' + String(id).padStart(3, '0'), id]);
+  // Practica 12: el identificador y el codigo REPxxx se asignan en UNA sola sentencia (atomica): ya no existe el estado
+  // intermedio "reporte sin codigo" de la Practica 11 (BE-02) y se ahorra una ida y vuelta a la base de datos.
+  let id;
+  try {
+    const ins = await pool.query(
+      `WITH n AS (SELECT nextval(pg_get_serial_sequence('reports', 'id'))::int AS id)
+       INSERT INTO reports (id, code, title, description, priority, created_by, attachment_url, idempotency_key)
+       SELECT n.id, 'REP' || CASE WHEN length(n.id::text) < 3 THEN lpad(n.id::text, 3, '0') ELSE n.id::text END, $1,$2,$3,$4,$5,$6 FROM n
+       RETURNING id`,
+      [title.trim(), description.trim(), priority, req.user.id, attachment_url, key]);
+    id = ins.rows[0].id;
+  } catch (e) {
+    // Dos envios simultaneos con la misma clave: el indice unico deja pasar uno y el otro recibe el reporte ya creado
+    if (key && e.code === '23505') { const previo = await repetido(); if (previo) { res.set('Idempotent-Replay', 'true'); return res.status(200).json(previo); } }
+    throw e;
+  }
   const { rows } = await pool.query(SELECT + ' WHERE r.id = $1', [id]);
   res.status(201).json(rows[0]);
 }

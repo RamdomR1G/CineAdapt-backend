@@ -1,0 +1,116 @@
+{
+  "etiqueta": "despues",
+  "fecha": "2026-11-13T00:13:53.891Z",
+  "consultas": [
+    {
+      "consulta": "1. Por identificador (contenido)",
+      "filas": 1,
+      "mediana_ms": 0.231,
+      "max_ms": 1.121,
+      "ejecucion_bd_ms": 0.009,
+      "usa_indice": true,
+      "plan": "Index Scan (content_pkey)"
+    },
+    {
+      "consulta": "2. Conjunto pequeno (lista de un usuario)",
+      "filas": 10,
+      "mediana_ms": 0.652,
+      "max_ms": 2.862,
+      "ejecucion_bd_ms": 0.067,
+      "usa_indice": true,
+      "plan": "Sort > Nested Loop > Index Scan (watchlist_user_id_content_id_key) > Index Scan (content_pkey)"
+    },
+    {
+      "consulta": "3. Conjunto grande (catalogo completo)",
+      "filas": 5000,
+      "mediana_ms": 13.091,
+      "max_ms": 23.194,
+      "ejecucion_bd_ms": 1.548,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    },
+    {
+      "consulta": "3b. Catalogo, primera pagina de 30 (campos de tarjeta)",
+      "filas": 30,
+      "mediana_ms": 0.155,
+      "max_ms": 1.351,
+      "ejecucion_bd_ms": 0.025,
+      "usa_indice": true,
+      "plan": "Limit > Index Scan (idx_content_status_created)"
+    },
+    {
+      "consulta": "4a. Filtro: reportes de un usuario",
+      "filas": 277,
+      "mediana_ms": 1.947,
+      "max_ms": 2.905,
+      "ejecucion_bd_ms": 0.733,
+      "usa_indice": true,
+      "plan": "Sort > Hash Join > Nested Loop > Index Scan (users_pkey) > Bitmap Heap Scan > Bitmap Index Scan (idx_reports_created_by) > Hash > Seq Scan"
+    },
+    {
+      "consulta": "4b. Filtro: reportes asignados y abiertos",
+      "filas": 0,
+      "mediana_ms": 0.107,
+      "max_ms": 0.175,
+      "ejecucion_bd_ms": 0.006,
+      "usa_indice": true,
+      "plan": "Index Scan (idx_reports_assigned_to)"
+    },
+    {
+      "consulta": "4c. Filtro: contenido por tipo y genero",
+      "filas": 1551,
+      "mediana_ms": 4.13,
+      "max_ms": 8.451,
+      "ejecucion_bd_ms": 0.94,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    },
+    {
+      "consulta": "4d. Filtro: busqueda de texto (ILIKE)",
+      "filas": 11,
+      "mediana_ms": 1.971,
+      "max_ms": 2.783,
+      "ejecucion_bd_ms": 1.52,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    }
+  ],
+  "serie_prueba": {
+    "id": 1,
+    "temporadas": 5,
+    "episodios": 50
+  },
+  "concurrencia": {
+    "clientes": 20,
+    "esperado_version_final": 21,
+    "leer_y_escribir": {
+      "version_final": 5,
+      "actualizaciones_perdidas": 16,
+      "mediana_ms": 29.283,
+      "max_ms": 37.573
+    },
+    "update_atomico_en_transaccion": {
+      "version_final": 21,
+      "actualizaciones_perdidas": 0,
+      "mediana_ms": 70.275,
+      "max_ms": 123.908,
+      "espera_por_bloqueo_ms": 118.908
+    },
+    "control_optimista": {
+      "aplicadas": 1,
+      "rechazadas_409": 19
+    },
+    "duracion_total_ms": 170.117
+  },
+  "integridad": {
+    "reportes_sin_codigo": 50000,
+    "listas_duplicadas": 0,
+    "listas_huerfanas": 0,
+    "indices": [
+      "idx_content_status_created",
+      "idx_reports_assigned_to",
+      "idx_reports_created_by",
+      "idx_reports_idem"
+    ]
+  }
+}
