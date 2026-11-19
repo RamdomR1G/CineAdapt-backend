@@ -66,7 +66,7 @@
   },
   {
     "id": "DB-07",
-    "descripcion": "Fallo simulado entre INSERT y UPDATE del codigo",
-    "resultado": "HTTP 500; fila huerfana con code=null"
+    "descripcion": "Fallo simulado al crear un reporte (sentencia unica)",
+    "resultado": "HTTP 500; filas guardadas=0 (sin registros parciales)"
   }
 ]

@@ -1,0 +1,305 @@
+{
+  "etiqueta": "despues",
+  "fecha": "2026-11-13T00:11:45.609Z",
+  "servidor": "http://localhost:4100",
+  "segundos_por_nivel": 6,
+  "lectura": "/content?status=published&fields=card&limit=30&offset=0",
+  "equipo": {
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "nucleos": 2,
+    "ram_gb": 7.83,
+    "node": "v22.23.4"
+  },
+  "lectura_res": [
+    {
+      "usuarios": 1,
+      "solicitudes": 2501,
+      "exitosas": 2501,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 2501
+      },
+      "rps": 416.76,
+      "prom_ms": 2.37,
+      "p50_ms": 2.13,
+      "p90_ms": 2.78,
+      "p95_ms": 3.7,
+      "p99_ms": 6.99,
+      "max_ms": 17.47,
+      "bytes_red_por_resp": 513,
+      "bytes_sin_comprimir": 6781,
+      "cpu_prom_pct": 55.58,
+      "cpu_max_pct": 62.01,
+      "rss_max_mb": 106.43
+    },
+    {
+      "usuarios": 5,
+      "solicitudes": 5303,
+      "exitosas": 5303,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 5303
+      },
+      "rps": 883.26,
+      "prom_ms": 5.64,
+      "p50_ms": 5.07,
+      "p90_ms": 8.11,
+      "p95_ms": 9.88,
+      "p99_ms": 16.47,
+      "max_ms": 50.97,
+      "bytes_red_por_resp": 513,
+      "bytes_sin_comprimir": 6781,
+      "cpu_prom_pct": 74.15,
+      "cpu_max_pct": 79.96,
+      "rss_max_mb": 140.83
+    },
+    {
+      "usuarios": 10,
+      "solicitudes": 6420,
+      "exitosas": 6420,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 6420
+      },
+      "rps": 1069.32,
+      "prom_ms": 9.34,
+      "p50_ms": 8.96,
+      "p90_ms": 13.07,
+      "p95_ms": 14.69,
+      "p99_ms": 21.63,
+      "max_ms": 60.58,
+      "bytes_red_por_resp": 513,
+      "bytes_sin_comprimir": 6781,
+      "cpu_prom_pct": 72.84,
+      "cpu_max_pct": 76.05,
+      "rss_max_mb": 152.36
+    },
+    {
+      "usuarios": 25,
+      "solicitudes": 7090,
+      "exitosas": 7090,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 7090
+      },
+      "rps": 1179.37,
+      "prom_ms": 21.17,
+      "p50_ms": 20.05,
+      "p90_ms": 30.04,
+      "p95_ms": 34.29,
+      "p99_ms": 43.98,
+      "max_ms": 87.6,
+      "bytes_red_por_resp": 513,
+      "bytes_sin_comprimir": 6781,
+      "cpu_prom_pct": 74.73,
+      "cpu_max_pct": 81.04,
+      "rss_max_mb": 157.18
+    },
+    {
+      "usuarios": 50,
+      "solicitudes": 7183,
+      "exitosas": 7183,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 7183
+      },
+      "rps": 1191.77,
+      "prom_ms": 41.87,
+      "p50_ms": 42.01,
+      "p90_ms": 51.9,
+      "p95_ms": 54.64,
+      "p99_ms": 61.65,
+      "max_ms": 105.4,
+      "bytes_red_por_resp": 513,
+      "bytes_sin_comprimir": 6781,
+      "cpu_prom_pct": 73.62,
+      "cpu_max_pct": 80.01,
+      "rss_max_mb": 158.86
+    }
+  ],
+  "escritura_res": [
+    {
+      "usuarios": 1,
+      "solicitudes": 3036,
+      "exitosas": 3036,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "201": 3036
+      },
+      "rps": 505.95,
+      "prom_ms": 1.95,
+      "p50_ms": 1.83,
+      "p90_ms": 2.23,
+      "p95_ms": 2.44,
+      "p99_ms": 5.17,
+      "max_ms": 25.11,
+      "bytes_red_por_resp": 357,
+      "bytes_sin_comprimir": 357,
+      "cpu_prom_pct": 41.25,
+      "cpu_max_pct": 43.96,
+      "rss_max_mb": 163.61
+    },
+    {
+      "usuarios": 5,
+      "solicitudes": 7227,
+      "exitosas": 7227,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "201": 7227
+      },
+      "rps": 1204.13,
+      "prom_ms": 4.14,
+      "p50_ms": 3.82,
+      "p90_ms": 5.7,
+      "p95_ms": 6.59,
+      "p99_ms": 9.2,
+      "max_ms": 21.19,
+      "bytes_red_por_resp": 357,
+      "bytes_sin_comprimir": 357,
+      "cpu_prom_pct": 67.4,
+      "cpu_max_pct": 72.03,
+      "rss_max_mb": 168.45
+    },
+    {
+      "usuarios": 10,
+      "solicitudes": 7673,
+      "exitosas": 7673,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "201": 7673
+      },
+      "rps": 1278.31,
+      "prom_ms": 7.81,
+      "p50_ms": 7.42,
+      "p90_ms": 10.67,
+      "p95_ms": 11.93,
+      "p99_ms": 16.08,
+      "max_ms": 29.15,
+      "bytes_red_por_resp": 358,
+      "bytes_sin_comprimir": 358,
+      "cpu_prom_pct": 62.86,
+      "cpu_max_pct": 66.04,
+      "rss_max_mb": 171.52
+    },
+    {
+      "usuarios": 25,
+      "solicitudes": 8559,
+      "exitosas": 8559,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "201": 8559
+      },
+      "rps": 1423.78,
+      "prom_ms": 17.54,
+      "p50_ms": 17.15,
+      "p90_ms": 22.45,
+      "p95_ms": 24.58,
+      "p99_ms": 29.53,
+      "max_ms": 94.64,
+      "bytes_red_por_resp": 358,
+      "bytes_sin_comprimir": 358,
+      "cpu_prom_pct": 64.28,
+      "cpu_max_pct": 67.98,
+      "rss_max_mb": 172.32
+    },
+    {
+      "usuarios": 50,
+      "solicitudes": 8607,
+      "exitosas": 8607,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "201": 8607
+      },
+      "rps": 1430.22,
+      "prom_ms": 34.91,
+      "p50_ms": 34.22,
+      "p90_ms": 41.89,
+      "p95_ms": 45.12,
+      "p99_ms": 51.39,
+      "max_ms": 58.77,
+      "bytes_red_por_resp": 358,
+      "bytes_sin_comprimir": 358,
+      "cpu_prom_pct": 65.42,
+      "cpu_max_pct": 69.95,
+      "rss_max_mb": 176.23
+    }
+  ],
+  "login_res": [
+    {
+      "usuarios": 1,
+      "solicitudes": 22,
+      "exitosas": 22,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 22
+      },
+      "rps": 3.53,
+      "prom_ms": 283.05,
+      "p50_ms": 280.63,
+      "p90_ms": 290.8,
+      "p95_ms": 293.52,
+      "p99_ms": 294.34,
+      "max_ms": 294.34,
+      "bytes_red_por_resp": 319,
+      "bytes_sin_comprimir": 319,
+      "cpu_prom_pct": 99.08,
+      "cpu_max_pct": 101.93,
+      "rss_max_mb": 176.35
+    },
+    {
+      "usuarios": 5,
+      "solicitudes": 45,
+      "exitosas": 45,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 45
+      },
+      "rps": 6.9,
+      "prom_ms": 702.84,
+      "p50_ms": 624.54,
+      "p90_ms": 1032.87,
+      "p95_ms": 1058,
+      "p99_ms": 1100.6,
+      "max_ms": 1100.6,
+      "bytes_red_por_resp": 319,
+      "bytes_sin_comprimir": 319,
+      "cpu_prom_pct": 194.23,
+      "cpu_max_pct": 200.08,
+      "rss_max_mb": 176.35
+    },
+    {
+      "usuarios": 10,
+      "solicitudes": 50,
+      "exitosas": 50,
+      "errores": 0,
+      "errores_pct": 0,
+      "codigos": {
+        "200": 50
+      },
+      "rps": 6.97,
+      "prom_ms": 1343.52,
+      "p50_ms": 1284.53,
+      "p90_ms": 1640.57,
+      "p95_ms": 1700.14,
+      "p99_ms": 1750.87,
+      "max_ms": 1750.87,
+      "bytes_red_por_resp": 319,
+      "bytes_sin_comprimir": 319,
+      "cpu_prom_pct": 195.51,
+      "cpu_max_pct": 199.88,
+      "rss_max_mb": 100.84
+    }
+  ]
+}

@@ -22,29 +22,46 @@ async function notifyAll(contentId, type, message) {
 
 // ── Contenido ─────────────────────────────────────────────────────────────────
 
+// Campos que necesita una tarjeta del catalogo (evita enviar descripcion y demas texto largo)
+const CARD_FIELDS = 'id, title, type, status, genre, release_year, poster_url, video_url, external_video_url, trailer_url, created_at';
+
+// GET /api/content  — Practica 12: paginacion (?limit=&offset=), campos reducidos (?fields=card) y total en X-Total-Count.
+// Sin ?limit se devuelve todo el catalogo, igual que antes (compatibilidad con clientes anteriores).
 async function listContent(req, res) {
-  const { type, status, genre, search } = req.query;
-  let query  = 'SELECT * FROM content WHERE 1=1';
+  const { type, status, genre, search, limit, offset, fields } = req.query;
+  let where  = 'WHERE 1=1';
   const params = [];
   let i = 1;
 
   // Usuarios normales solo ven contenido publicado
   if (req.user.role !== 'admin') {
-    query += ` AND status = 'published'`;
+    where += ` AND status = 'published'`;
   } else if (status && status !== 'all') {
-    query += ` AND status = $${i++}`;
+    where += ` AND status = $${i++}`;
     params.push(status);
   }
 
-  if (type)   { query += ` AND type = $${i++}`;  params.push(type); }
-  if (genre)  { query += ` AND genre = $${i++}`; params.push(genre); }
+  if (type)   { where += ` AND type = $${i++}`;  params.push(type); }
+  if (genre)  { where += ` AND genre = $${i++}`; params.push(genre); }
   if (search) {
-    query += ` AND (title ILIKE $${i} OR description ILIKE $${i})`;
+    where += ` AND (title ILIKE $${i} OR description ILIKE $${i} OR genre ILIKE $${i})`;   // el genero tambien se busca (la pantalla Buscar dice "Titulo o genero")
     params.push(`%${search}%`);
     i++;
   }
 
-  query += ' ORDER BY created_at DESC';
+  const cols = fields === 'card' ? CARD_FIELDS : '*';
+  let query = `SELECT ${cols} FROM content ${where} ORDER BY created_at DESC, id DESC`;
+
+  if (limit !== undefined || offset !== undefined) {
+    const lim = limit === undefined ? 30 : Number(limit);
+    const off = offset === undefined ? 0 : Number(offset);
+    if (!Number.isInteger(lim) || lim < 1 || lim > 100 || !Number.isInteger(off) || off < 0)
+      return res.status(400).json({ message: 'limit debe ser un entero entre 1 y 100 y offset un entero mayor o igual a 0.' });
+    const total = await pool.query(`SELECT count(*)::int AS n FROM content ${where}`, params);
+    res.set('X-Total-Count', String(total.rows[0].n));
+    query += ` LIMIT ${lim} OFFSET ${off}`;
+  }
+
   const { rows } = await pool.query(query, params);
   res.json(rows);
 }
@@ -57,17 +74,13 @@ async function getContent(req, res) {
 
   // Si es serie, incluir temporadas y episodios
   if (content.type === 'series') {
+    // Practica 12: una sola consulta para temporadas y episodios (antes: 1 + una consulta por temporada)
     const { rows: seasons } = await pool.query(
-      'SELECT * FROM seasons WHERE content_id = $1 ORDER BY season_number',
+      `SELECT s.*, COALESCE(json_agg(e ORDER BY e.episode_number) FILTER (WHERE e.id IS NOT NULL), '[]'::json) AS episodes
+       FROM seasons s LEFT JOIN episodes e ON e.season_id = s.id
+       WHERE s.content_id = $1 GROUP BY s.id ORDER BY s.season_number`,
       [content.id]
     );
-    for (const season of seasons) {
-      const { rows: episodes } = await pool.query(
-        'SELECT * FROM episodes WHERE season_id = $1 ORDER BY episode_number',
-        [season.id]
-      );
-      season.episodes = episodes;
-    }
     content.seasons = seasons;
   }
 

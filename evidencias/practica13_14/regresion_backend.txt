@@ -1,0 +1,4 @@
+  ● AUT-04 API: codigos HTTP del flujo de autenticacion › registro con contrasena de 7 caracteres -> 400 (regla que el cliente ya replica)
+  ● register (unitaria, BD simulada) › caso limite: contrasena de 7 caracteres se rechaza
+Test Suites: 2 failed, 9 passed, 11 total
+Tests:       2 failed, 162 passed, 164 total

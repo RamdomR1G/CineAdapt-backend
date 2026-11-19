@@ -3,6 +3,7 @@ require('express-async-errors');
 
 const express = require('express');
 const cors    = require('cors');
+const compression = require('compression');
 const routes  = require('./routes');
 
 const app  = express();
@@ -23,7 +24,10 @@ app.use(cors({
     else cb(new Error('CORS bloqueado'));
   },
   credentials: true,
+  exposedHeaders: ['X-Total-Count', 'Idempotent-Replay'],
 }));
+// Practica 12: compresion gzip de las respuestas (el catalogo JSON se reduce ~90 %)
+app.use(compression({ threshold: 1024 }));
 
 app.use(express.json());
 app.use('/api', routes);

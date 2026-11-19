@@ -47,6 +47,7 @@
       "version",
       "created_at",
       "updated_at",
+      "idempotency_key",
       "created_by_name",
       "assigned_to_name"
     ],

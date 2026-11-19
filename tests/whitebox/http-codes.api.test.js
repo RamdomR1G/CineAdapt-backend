@@ -138,7 +138,7 @@ describe('Errores inesperados (500) - hallazgos', () => {
   test('HTTP-16 el 500 devuelve al cliente el mensaje interno de PostgreSQL (fuga de informacion, DEF-BE-05)', async () => {
     const r = await request(app).get('/api/content/abc').set(user.H);
     anotar('HTTP-16', 'GET /api/content/abc', 'el error no debe revelar detalles internos', 500, r, 'Cuerpo: ' + JSON.stringify(r.body));
-    expect(r.body.message).toMatch(/invalid input syntax for type integer/);          // detalle interno expuesto
+    expect(r.body.message).toMatch(/integer/);          // detalle interno expuesto (el idioma del mensaje depende de PostgreSQL)
     expect(JSON.stringify(r.body)).not.toMatch(/at\s.+\.js|node_modules|pg-pool/);    // pero no se expone la traza de pila
   });
 });

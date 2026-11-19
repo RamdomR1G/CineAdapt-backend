@@ -1,0 +1,111 @@
+{
+  "etiqueta": "antes",
+  "fecha": "2026-11-12T23:57:03.032Z",
+  "consultas": [
+    {
+      "consulta": "1. Por identificador (contenido)",
+      "filas": 1,
+      "mediana_ms": 0.24,
+      "max_ms": 1.337,
+      "ejecucion_bd_ms": 0.012,
+      "usa_indice": true,
+      "plan": "Index Scan (content_pkey)"
+    },
+    {
+      "consulta": "2. Conjunto pequeno (lista de un usuario)",
+      "filas": 10,
+      "mediana_ms": 0.665,
+      "max_ms": 2.226,
+      "ejecucion_bd_ms": 0.057,
+      "usa_indice": true,
+      "plan": "Sort > Nested Loop > Index Scan (watchlist_user_id_content_id_key) > Index Scan (content_pkey)"
+    },
+    {
+      "consulta": "3. Conjunto grande (catalogo completo)",
+      "filas": 5000,
+      "mediana_ms": 13.279,
+      "max_ms": 32.799,
+      "ejecucion_bd_ms": 1.582,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    },
+    {
+      "consulta": "3b. Catalogo, primera pagina de 30 (campos de tarjeta)",
+      "filas": 30,
+      "mediana_ms": 3.472,
+      "max_ms": 8.253,
+      "ejecucion_bd_ms": 3.285,
+      "usa_indice": false,
+      "plan": "Limit > Sort > Seq Scan"
+    },
+    {
+      "consulta": "4a. Filtro: reportes de un usuario",
+      "filas": 277,
+      "mediana_ms": 4.647,
+      "max_ms": 7.95,
+      "ejecucion_bd_ms": 5.715,
+      "usa_indice": true,
+      "plan": "Sort > Hash Join > Nested Loop > Index Scan (users_pkey) > Seq Scan > Hash > Seq Scan"
+    },
+    {
+      "consulta": "4b. Filtro: reportes asignados y abiertos",
+      "filas": 0,
+      "mediana_ms": 3.057,
+      "max_ms": 8.636,
+      "ejecucion_bd_ms": 2.805,
+      "usa_indice": false,
+      "plan": "Seq Scan"
+    },
+    {
+      "consulta": "4c. Filtro: contenido por tipo y genero",
+      "filas": 1551,
+      "mediana_ms": 4.035,
+      "max_ms": 9.308,
+      "ejecucion_bd_ms": 1.331,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    },
+    {
+      "consulta": "4d. Filtro: busqueda de texto (ILIKE)",
+      "filas": 11,
+      "mediana_ms": 1.987,
+      "max_ms": 4.424,
+      "ejecucion_bd_ms": 1.528,
+      "usa_indice": false,
+      "plan": "Sort > Seq Scan"
+    }
+  ],
+  "serie_prueba": {
+    "id": 1,
+    "temporadas": 5,
+    "episodios": 50
+  },
+  "concurrencia": {
+    "clientes": 20,
+    "esperado_version_final": 21,
+    "leer_y_escribir": {
+      "version_final": 3,
+      "actualizaciones_perdidas": 18,
+      "mediana_ms": 30.398,
+      "max_ms": 35.537
+    },
+    "update_atomico_en_transaccion": {
+      "version_final": 21,
+      "actualizaciones_perdidas": 0,
+      "mediana_ms": 67.829,
+      "max_ms": 120.891,
+      "espera_por_bloqueo_ms": 115.891
+    },
+    "control_optimista": {
+      "aplicadas": 1,
+      "rechazadas_409": 19
+    },
+    "duracion_total_ms": 164.427
+  },
+  "integridad": {
+    "reportes_sin_codigo": 50000,
+    "listas_duplicadas": 0,
+    "listas_huerfanas": 0,
+    "indices": []
+  }
+}

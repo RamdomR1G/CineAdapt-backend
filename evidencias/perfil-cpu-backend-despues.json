@@ -1,0 +1,80 @@
+{
+  "duracion_ms": 29033.1,
+  "activo_ms": 8839.9,
+  "por_categoria": {
+    "inactivo (idle)": {
+      "ms": 20193.2,
+      "pct_del_tiempo_activo": null
+    },
+    "nucleo de Node / nativo": {
+      "ms": 6225.1,
+      "pct_del_tiempo_activo": 70.4
+    },
+    "codigo de la aplicacion y otros": {
+      "ms": 1062.2,
+      "pct_del_tiempo_activo": 12
+    },
+    "express / middleware": {
+      "ms": 605.3,
+      "pct_del_tiempo_activo": 6.8
+    },
+    "recoleccion de basura": {
+      "ms": 430.9,
+      "pct_del_tiempo_activo": 4.9
+    },
+    "pg (base de datos)": {
+      "ms": 301.2,
+      "pct_del_tiempo_activo": 3.4
+    },
+    "JSON.stringify": {
+      "ms": 213.1,
+      "pct_del_tiempo_activo": 2.4
+    },
+    "bcrypt": {
+      "ms": 2.1,
+      "pct_del_tiempo_activo": 0
+    }
+  },
+  "top_funciones": [
+    {
+      "funcion": "writev :-1",
+      "ms": 1799.7
+    },
+    {
+      "funcion": "writeBuffer :-1",
+      "ms": 1009.8
+    },
+    {
+      "funcion": "processChunk node:zlib:491",
+      "ms": 679.2
+    },
+    {
+      "funcion": "createPublicKey crypto/keys:698",
+      "ms": 487.4
+    },
+    {
+      "funcion": "(garbage collector) :-1",
+      "ms": 430.9
+    },
+    {
+      "funcion": "stringify lib/response.js:1154",
+      "ms": 210.9
+    },
+    {
+      "funcion": "(program) :-1",
+      "ms": 159
+    },
+    {
+      "funcion": "writeLatin1String :-1",
+      "ms": 111
+    },
+    {
+      "funcion": "addFields lib/result.js:81",
+      "ms": 98.8
+    },
+    {
+      "funcion": "compression compression/index.js:80",
+      "ms": 83.9
+    }
+  ]
+}
